@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+    <title>My Silant</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    {% load static %}
+    <link rel="stylesheet" media="all" href="{% static '/css/styles1.css' %}" data-turbolinks-track="reload">
+    <script src="{% static '/js/turbo-link.js' %}" data-turbolinks-track="reload"></script>
+    <link rel="stylesheet" type="text/css" href="{% static '/css/includes.css' %}"><script async="" type="text/javascript" src="/js/vendor.js"></script></head>
+
+  <body>
+    <header>
+      <div class="centrator">
+        <div class="leftside">
+          <div id="toplogo"><img src="/static/picture/logo.png"></div>
+        </div>
+        <div class="rightside">
+          <div class="line">
+            <div id="contacts" class="p-l-2">
+              <span class="phone"><a href="tel:+7-8352-20-12-09">+7-8352-20-12-09, telegram</a></span>
+              <span><a href="http://localhost/?#"></a></span>
+            </div>
+            <div id="auth_widget">
+              <a href="http://localhost/?#">Авторизация</a>
+            </div>
+          </div>
+          <div class="line">
+            <div id="project_name" class="p-l-2">
+              <span>Электронная сервисная книжка «Мой силант»</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    {% block content %}
+    <div id="content">
+      <div class="centrator">
+        <section>
+  <div class="line">
+    <span class="title">
+      Рекламации
+    </span>
+  </div>
+  <div class="line">
+    <div class="column">
+      <div class="search_result">
+        {% if this_authorized %}
+        <div class="result_info">
+          <span>Добро пожаловать {{request.user.first_name}}!</span>
+        </div>
+        <div class="result_info">
+          <span>Детальная информация по рекламациям вашей техники</span>
+        </div>
+        <div class="search_result">
+        <div class="result_info">
+          <div class="machine">
+            <span>
+              Модель техники {{machine.technique_model}}
+            </span>
+            <span>
+              Заводской номер техники {{machine.number_machine}}
+            </span>
+          </div>
+        </div>
+      </div>
+         <div class="result_collection">
+          <div class="tabs">
+            <a href="{% url 'machine_detail' machine.pk %}">
+            <div class="tab">
+              <span>
+                Общая информация
+              </span>
+            </div>
+            </a>
+            <a href="{% url 'maintenance_detail' machine.pk %}">
+              <div class="tab">
+              <span>
+                ТО
+              </span>
+            </div>
+            </a>
+            <a href="{% url 'complaint_detail' machine.pk %}">
+            <div class="tab active">
+              <span>
+                Рекламации
+              </span>
+            </div>
+            </a>
+            {% if is_manager == 'Менеджер' %}
+            <a href="/service_company/">
+            <div class="tab">
+              <span>
+                Списки
+              </span>
+            </div>
+            </a>
+            {% endif %}
+          </div>
+         </div>
+        <div class="result_collection">
+          <table>
+            <tbody><tr>
+              <th class="nam left">Дата отказа</th>
+              <th class="nam left">Наработка, м/час</th>
+              <th class="nam left">Узел отказа</th>
+              <th class="nam left">Описание отказа</th>
+              <th class="nam left">Способ восстановления</th>
+              <th class="nam left">Используемые запасные части</th>
+              <th class="nam left">Дата восстановления</th>
+              <th class="nam left">Время простоя техники</th>
+              <th class="nam left">Зав. № машины</th>
+              <th class="nam left">Сервисная компания</th>
+              <th class="nam left">Изменить</th>
+              <th class="nam left">Удалить</th>
+            <tr>
+              <td class="nam left">{{complaint_d.date_rejection}}</td>
+              <td class="nam left">{{complaint_d.operating_time}}</td>
+              <td class="nam left">{{complaint_d.failure_node}}</td>
+              <td class="nam left">{{complaint_d.failure_description}}</td>
+              <td class="nam left">{{complaint_d.recovery_method}}</td>
+              <td class="nam left">{{complaint_d.spare_parts}}</td>
+              <td class="nam left">{{complaint_d.recovery_date}}</td>
+              <td class="nam left">{{complaint_d.equipment_downtime}}</td>
+              <td class="nam left">{{complaint_d.machine_complaint}}</td>
+              <td class="nam left">{{complaint_d.service_company_complaint}}</td>
+              <td class="nam left">
+                <div class="tabs">
+                  <a href="{% url 'complaint_update' complaint_d.pk %}">
+                    <div class="tab active">
+                      <span>
+                        <div class="smalltext">Изменить</div>
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </td>
+              <td class="nam left">
+                <div class="tabs">
+                  <a href="{% url 'complaint_delete' complaint_d.pk %}">
+                    <div class="tab active">
+                      <span>
+                        <div class="smalltext">Удалить</div>
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </td>
+            </tr>
+            </tr>
+            <tr>
+              <td class="nam left"></td>
+              <td class="nam left"></td>
+              <td class="nam left">{{node.description}}</td>
+              <td class="nam left"></td>
+              <td class="nam left">{{recovery.description}}</td>
+              <td class="nam left"></td>
+              <td class="nam left"></td>
+              <td class="nam left"></td>
+              <td class="nam left"></td>
+              <td class="nam left">{{service.description}}</td>
+            </tr>
+          </tbody></table>
+           <div class="tabs">
+                  <a href="{% url 'complaint_create' %}">
+                    <div class="tab">
+                      <span>
+                        Добавить рекламацию
+                      </span>
+                    </div>
+                  </a>
+                </div>
+          {% else %}
+          <div class="search_result empty_result">
+            <span>
+              Авторизуйтесь
+            </span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+        {% endblock content %}
+    <footer>
+      <div class="centrator">
+        <div class="leftside">
+          <div class="line">
+            <div id="contacts">
+              <span class="phone"><a href="tel:+7-8352-20-12-09">+7-8352-20-12-09, telegram</a></span>
+              <span><a></a></span>
+            </div>
+          </div>
+        </div>
+        <div class="rightside">
+          <span id="copyright">Мой Силант 2023</span>
+        </div>
+      </div>
+    </footer>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+    <title>My Silant</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    {% load static %}
+    <link rel="stylesheet" media="all" href="{% static '/css/styles1.css' %}" data-turbolinks-track="reload">
+    <script src="{% static '/js/turbo-link.js' %}" data-turbolinks-track="reload"></script>
+    <link rel="stylesheet" type="text/css" href="{% static '/css/includes.css' %}"><script async="" type="text/javascript" src="/js/vendor.js"></script></head>
+
+  <body>
+    <header>
+      <div class="centrator">
+        <div class="leftside">
+          <div id="toplogo"><img src="/static/picture/logo.png"></div>
+        </div>
+        <div class="rightside">
+          <div class="line">
+            <div id="contacts" class="p-l-2">
+              <span class="phone"><a href="tel:+7-8352-20-12-09">+7-8352-20-12-09, telegram</a></span>
+              <span><a href="http://localhost/?#"></a></span>
+            </div>
+            <div id="auth_widget">
+              <a href="/sign/logout/">Выход</a>
+            </div>
+          </div>
+          <div class="line">
+            <div id="project_name" class="p-l-2">
+              <span>Электронная сервисная книжка «Мой силант»</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    {% block content %}
+    <div id="content">
+      <div class="centrator">
+        <section>
+  <div class="line">
+    <span class="title">
+      Проверьте комплектацию и технические характеристики техники Силант
+    </span>
+  </div>
+  <div class="line">
+      <div class="search_result">
+      <div class="result_info">
+        <div class="result_collection">
+            <form method="GET">
+              {{ filter.form }}
+                <div class="tabs">
+                <input class="tab" type="submit" value="Фильтр">
+                </div>
+            </form>
+      </div>
+    </div>
+  </div>
+    <div class="column">
+      <div class="search_result">
+        <div class="result_info">
+          <span>Добро пожаловать {{request.user.username}}!</span>
+        </div>
+        <div class="result_info">
+          <span>Выбирите список для редактирования, удаления или добавьте информацию в список</span>
+        </div>
+        <div class="result_collection">
+          <div class="tabs">
+            <a href="/service_company/">
+            <div class="tab">
+              <span>
+                Сервисная компания
+              </span>
+            </div>
+            </a>
+            <a href="/technique_model/">
+              <div class="tab">
+              <span>
+                Модель техники
+              </span>
+            </div>
+            </a>
+            <a href="/engine_model/">
+            <div class="tab">
+              <span>
+                Модель двигателя
+              </span>
+            </div>
+            </a>
+            <a href="/transmission_model/">
+            <div class="tab">
+              <span>
+                Модель трансмиссии
+              </span>
+            </div>
+            </a>
+            <a href="/drive_axle_model/">
+            <div class="tab active">
+              <span>
+                Модель ведущего моста
+              </span>
+            </div>
+            </a>
+            <a href="/steering_bridge_model/">
+            <div class="tab">
+              <span>
+                Модель управляемтого моста
+              </span>
+            </div>
+            </a>
+            <a href="/service_type/">
+            <div class="tab">
+              <span>
+                Вид ТО
+              </span>
+            </div>
+            </a>
+            <a href="/failure_node/">
+            <div class="tab">
+              <span>
+                Узел отказа
+              </span>
+            </div>
+            </a>
+            <a href="/recovery_method/">
+            <div class="tab">
+              <span>
+                Способ восстановления
+              </span>
+            </div>
+            </a>
+          </div>
+        </div>
+        <div class="result_collection">
+          <table>
+            <tbody><tr>
+              <th class="nam left">Название</th>
+              <th class="nam left">Описание</th>
+              <th class="nam left">Редактировать</th>
+              <th class="nam left">Удалить</th>
+            </tr>
+            {% for m in filter.qs %}
+            <tr id="myUL">
+              <td class="nam left">{{m.name}}</td>
+              <td class="nam left">{{m.description}}</td>
+              <td class="nam left">
+                <div class="tabs">
+                  <a href="{% url 'drive_axle_model_edit' m.pk %}">
+                    <div class="tab active">
+                      <span>
+                        <div class="smalltext">Редактировать</div>
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </td>
+              <td class="nam left">
+                <div class="tabs">
+                  <a href="{% url 'drive_axle_model_delete' m.pk %}">
+                    <div class="tab active">
+                      <span>
+                        <div class="smalltext">Удалить</div>
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody></table>
+          <div class="tabs">
+                  <a href="{% url 'drive_axle_model_create' %}">
+                    <div class="tab">
+                      <span>
+                        Добавить
+                      </span>
+                    </div>
+                  </a>
+                </div>
+        </div>
+      </div>
+    </div>
+  </div>
+        {% endblock content %}
+    <footer>
+      <div class="centrator">
+        <div class="leftside">
+          <div class="line">
+            <div id="contacts">
+              <span class="phone"><a href="tel:+7-8352-20-12-09">+7-8352-20-12-09, telegram</a></span>
+              <span><a></a></span>
+            </div>
+          </div>
+        </div>
+        <div class="rightside">
+          <span id="copyright">Мой Силант 2023</span>
+        </div>
+      </div>
+    </footer>

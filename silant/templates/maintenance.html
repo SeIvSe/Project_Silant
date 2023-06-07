@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+    <title>My Silant</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" media="all" href="{% static '/css/styles1.css' %}" data-turbolinks-track="reload">
+    <script src="{% static '/js/turbo-link.js' %}" data-turbolinks-track="reload"></script>
+    <link rel="stylesheet" type="text/css" href="{% static '/css/includes.css' %}"><script async="" type="text/javascript" src="/js/vendor.js"></script></head>
+
+  <body>
+    <header>
+      <div class="centrator">
+        <div class="leftside">
+          <div id="toplogo"><img src="/static/picture/logo.png"></div>
+        </div>
+        <div class="rightside">
+          <div class="line">
+            <div id="contacts" class="p-l-2">
+              <span class="phone"><a href="tel:+7-8352-20-12-09">+7-8352-20-12-09, telegram</a></span>
+              <span><a href="http://localhost/?#"></a></span>
+            </div>
+            <div id="auth_widget">
+              <a href="/sign/logout/">Выход</a>
+            </div>
+          </div>
+          <div class="line">
+            <div id="project_name" class="p-l-2">
+              <span>Электронная сервисная книжка «Мой силант»</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    {% block content %}
+    <div id="content">
+      <div class="centrator">
+        <section>
+  <div class="line">
+    <span class="title">
+      Проверьте комплектацию и технические характеристики техники Силант
+    </span>
+  </div>
+  <div class="line">
+    <div class="search_result">
+      <div class="result_info">
+        <div class="result_collection">
+            <form method="GET">
+              {{ filter.form }}
+                <div class="tabs">
+                <input class="tab" type="submit" value="Фильтр">
+                </div>
+            </form>
+      </div>
+    </div>
+  </div>
+    <div class="column">
+      <div class="search_result">
+
+        <div class="result_info">
+          <span>Добро пожаловать {{request.user.first_name}}!</span>
+        </div>
+        <div class="result_info">
+          <span>Информация о коплектации и технических характеристиках вашей техники</span>
+        </div>
+        <div class="result_collection">
+          <div class="tabs">
+            <a href="/user/">
+            <div class="tab">
+              <span>
+                Общая информация
+              </span>
+            </div>
+            </a>
+            <a href="/maintenance/">
+              <div class="tab active">
+              <span>
+                ТО
+              </span>
+            </div>
+            </a>
+            <a href="/complaint/">
+            <div class="tab">
+              <span>
+                Рекламации
+              </span>
+            </div>
+            </a>
+            {% if this_manager == 'Менеджер' %}
+            <a href="/service_company/">
+            <div class="tab">
+              <span>
+                Списки
+              </span>
+            </div>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="result_collection">
+
+          <table>
+            <tbody><tr>
+              <th class="nam left">Вид ТО</th>
+              <th class="nam left">Дата проведения ТО</th>
+              <th class="nam left">Наработка, м/час</th>
+              <th class="nam left">№ заказ-наряда</th>
+              <th class="nam left">Дата заказ-наряда</th>
+              <th class="nam left">Организация, проводившая ТО</th>
+              <th class="nam left">Машина</th>
+              <th class="nam left">Сервисная компания</th>
+              <th class="nam left">Детали</th>
+            {% for t in filter.qs %}
+            <tr>
+              <td class="nam left">{{t.service_type}}</td>
+              <td class="nam left">{{t.service_date}}</td>
+              <td class="nam left">{{t.operating_time}}</td>
+              <td class="nam left">{{t.work_order_number}}</td>
+              <td class="nam left">{{t.work_order_date}}</td>
+              <td class="nam left">{{t.company_make_service}}</td>
+              <td class="nam left">{{t.machine}}</td>
+              <td class="nam left">{{t.service_company}}</td>
+              <td class="nam left">
+                <div class="tabs">
+                  <a href="{% url 'maintenance_detail' t.pk %}">
+                    <div class="tab active">
+                      <span>
+                        <div class="smalltext">детали</div>
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </td>
+            </tr>
+            </tr>
+            {% endfor %}
+          </tbody></table>
+
+      </div>
+      </div>
+    </div>
+  </div>
+        {% endblock content %}
+    <footer>
+      <div class="centrator">
+        <div class="leftside">
+          <div class="line">
+            <div id="contacts">
+              <span class="phone"><a href="tel:+7-8352-20-12-09">+7-8352-20-12-09, telegram</a></span>
+              <span><a></a></span>
+            </div>
+          </div>
+        </div>
+        <div class="rightside">
+          <span id="copyright">Мой Силант 2023</span>
+        </div>
+      </div>
+    </footer>

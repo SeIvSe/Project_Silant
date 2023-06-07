@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+    <title>My Silant</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" media="all" href="{% static '/css/styles1.css' %}" data-turbolinks-track="reload">
+    <script src="{% static '/js/turbo-link.js' %}" data-turbolinks-track="reload"></script>
+  <link rel="stylesheet" type="text/css" href="{% static '/css/includes.css' %}"><script async="" type="text/javascript" src="/js/vendor.js"></script></head>
+
+  <body>
+    <header>
+      <div class="centrator">
+        <div class="leftside">
+          <div id="toplogo"><img src="/static/picture/logo.png"></div>
+        </div>
+        <div class="rightside">
+          <div class="line">
+            <div id="contacts" class="p-l-2">
+              <span class="phone"><a href="tel:+7-8352-20-12-09">+7-8352-20-12-09, telegram</a></span>
+              <span><a href="http://localhost/?#"></a></span>
+            </div>
+            <div id="auth_widget">
+              <a href="http://localhost/?#">Авторизация</a>
+            </div>
+          </div>
+          <div class="line">
+            <div id="project_name" class="p-l-2">
+              <span>Электронная сервисная книжка «Мой силант»</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    {% block content %}
+    <div id="content">
+      <div class="centrator">
+        <section>
+  <div class="line">
+    <span class="title">
+      Проверьте комплектацию и технические характеристики техники Силант
+    </span>
+  </div>
+  <div class="line">
+      <div class="search_result">
+      <div class="result_info">
+        <div class="result_collection">
+            <form method="GET">
+              {{ filter.form }}
+                <div class="tabs">
+                <input class="tab" type="submit" value="Фильтр">
+                </div>
+            </form>
+      </div>
+    </div>
+  </div>
+    <div class="column">
+      <div class="search_result">
+        {% if this_authorized %}
+        <div class="result_info">
+          <span>Добро пожаловать {{request.user.first_name}}!</span>
+        </div>
+        <div class="result_info">
+          <span>Информация о коплектации и технических характеристиках Вашей техники</span>
+        </div>
+        <div class="result_collection">
+          <div class="tabs">
+            <a href="/user/">
+            <div class="tab active">
+              <span>
+                Общая информация
+              </span>
+            </div>
+            </a>
+            <a href="/maintenance/">
+              <div class="tab">
+              <span>
+                ТО
+              </span>
+            </div>
+            </a>
+            <a href="/complaint/">
+            <div class="tab">
+              <span>
+                Рекламации
+              </span>
+            </div>
+            </a>
+             {% if this_manager == 'Менеджер' %}
+            <a href="/service_company/">
+            <div class="tab">
+              <span>
+                Списки
+              </span>
+            </div>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="result_collection">
+          <table>
+            <tbody><tr>
+              <th class="nam left">Зав. № машины</th>
+              <th class="nam left">Модель техники</th>
+              <th class="nam left">Модель двигателя</th>
+              <th class="nam left">Зав. № двигателя</th>
+              <th class="nam left">Модель трансмиссии</th>
+              <th class="nam left">Зав. № трансмиссии</th>
+              <th class="nam left">Модель ведущего моста</th>
+              <th class="nam left">Зав. № ведущего моста</th>
+              <th class="nam left">Модель управляемого моста</th>
+              <th class="nam left">Зав. № управляемого моста</th>
+              <th class="nam left">Дата отгрузки с завода</th>
+              <th class="nam left">Клиент</th>
+              <th class="nam left">Сервисная компания</th>
+              <th class="nam left">Детали</th>
+            </tr>
+            {% for m in filter.qs %}
+            {% if m.client == request.user.first_name or m.service_company.name == request.user.first_name or this_manager == 'Менеджер' %}
+            <tr id="myUL">
+              <td class="nam left">{{m.number_machine}}</td>
+              <td class="nam left">{{m.technique_model}}</td>
+              <td class="nam left">{{m.engine_model}}</td>
+              <td class="nam left">{{m.engine_number}}</td>
+              <td class="nam left">{{m.transmission_model}}</td>
+              <td class="nam left">{{m.transmission_number}}</td>
+              <td class="nam left">{{m.drive_axle_model}}</td>
+              <td class="nam left">{{m.drive_axle_number}}</td>
+              <td class="nam left">{{m.steering_bridge_model}}</td>
+              <td class="nam left">{{m.steering_bridge_number}}</td>
+              <td class="nam left">{{m.shipping_date}}</td>
+              <td class="nam left">{{m.client}}</td>
+              <td class="nam left">{{m.service_company}}</td>
+              <td class="nam left">
+                <div class="tabs">
+                  <a href="{% url 'machine_detail' m.pk %}">
+                    <div class="tab active">
+                      <span>
+                        <div class="smalltext">детали</div>
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody></table>
+          {% if machine == 'Машина не найдена!' %}
+          <div class="search_result empty_result">
+            <span>
+              {{ machine }}
+            </span>
+          </div>
+          {% endif %}
+          {% else %}
+          <div class="search_result empty_result">
+            <span>
+              Авторизуйтесь
+            </span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  </body>
+        {% endblock content %}
+    <footer>
+      <div class="centrator">
+        <div class="leftside">
+          <div class="line">
+            <div id="contacts">
+              <span class="phone"><a href="tel:+7-8352-20-12-09">+7-8352-20-12-09, telegram</a></span>
+              <span><a></a></span>
+            </div>
+          </div>
+        </div>
+        <div class="rightside">
+          <span id="copyright">Мой Силант 2023</span>
+        </div>
+      </div>
+    </footer>
